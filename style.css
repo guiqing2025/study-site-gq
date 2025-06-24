@@ -1,0 +1,318 @@
+/* --- 全局变量与基础样式 --- */
+:root {
+    --fluent-blue: #0078D4;
+    --fluent-blue-light: #F3F9FD;
+    --text-primary: #1A1A1A;
+    --text-secondary: #606060;
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F9F9F9;
+    --border-color: #E0E0E0;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
+    --border-radius-md: 8px;
+    --border-radius-sm: 4px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+a {
+    color: var(--fluent-blue);
+    text-decoration: none;
+}
+
+/* --- 顶部导航栏 --- */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    height: 60px;
+    background-color: var(--bg-primary);
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.top-nav .logo h1 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.top-nav .nav-links a {
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    margin: 0 4px;
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.2s ease;
+}
+
+.top-nav .nav-links a:hover {
+    background-color: var(--fluent-blue-light);
+    color: var(--fluent-blue);
+}
+
+.top-nav .nav-links a.active {
+    background-color: var(--fluent-blue-light);
+    color: var(--fluent-blue);
+    font-weight: 600;
+}
+
+.hamburger-menu {
+    display: none; /* 默认隐藏，移动端显示 */
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* --- 主要内容区域布局 --- */
+.content-area {
+    display: flex;
+    padding: 24px;
+    gap: 24px;
+}
+
+.sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background-color: var(--bg-primary);
+    padding: 20px;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    height: fit-content;
+}
+
+.sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filter-group {
+    margin-bottom: 24px;
+}
+
+.filter-group h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.filter-group ul {
+    list-style: none;
+}
+
+.filter-group ul li a {
+    display: block;
+    padding: 8px;
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.2s ease;
+    color: var(--text-secondary);
+}
+
+.filter-group ul li a:hover {
+    background-color: var(--fluent-blue-light);
+}
+
+.main-content {
+    flex-grow: 1;
+}
+
+/* --- 卡片网格与卡片样式 --- */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background-color: var(--bg-primary);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.card-content {
+    padding: 16px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card .subject {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fluent-blue);
+    margin-bottom: 8px;
+}
+
+.card .title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.card .description {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    flex-grow: 1;
+}
+
+.card .tags {
+    margin-bottom: 16px;
+}
+
+.card .tag {
+    display: inline-block;
+    background-color: var(--fluent-blue-light);
+    color: var(--fluent-blue);
+    padding: 4px 8px;
+    border-radius: var(--border-radius-sm);
+    font-size: 12px;
+    margin-right: 6px;
+}
+
+.progress-info {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background-color: #EFEFEF;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: var(--fluent-blue);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+
+/* --- 移动端响应式设计 --- */
+@media (max-width: 768px) {
+    .top-nav .nav-links {
+        display: none; /* 在移动端隐藏导航链接 */
+    }
+
+    .hamburger-menu {
+        display: block; /* 在移动端显示汉堡菜单 */
+    }
+    
+    .hamburger-menu span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: var(--text-primary);
+        margin: 5px 0;
+        transition: 0.3s;
+    }
+
+    .content-area {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        /* 在JS中可以实现折叠/展开 */
+    }
+
+    .card-grid {
+        grid-template-columns: 1fr; /* 移动端单列显示 */
+    }
+}
+
+/* --- 数学学习追踪页面样式 --- */
+.dashboard-flex {
+    display: flex;
+    gap: 32px;
+    margin-top: 24px;
+}
+.dashboard-left {
+    flex: 1 1 300px;
+    background: var(--bg-primary);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: 20px;
+}
+.dashboard-right {
+    flex: 2 1 500px;
+    background: var(--bg-primary);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: 20px;
+}
+.dashboard-left h3, .dashboard-right h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: var(--fluent-blue);
+}
+#math-question-list, #math-wrong-list, #math-history-list {
+    list-style: none;
+    margin-bottom: 20px;
+    padding-left: 0;
+}
+#math-question-list li, #math-wrong-list li, #math-history-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+#math-question-list li:last-child, #math-wrong-list li:last-child, #math-history-list li:last-child {
+    border-bottom: none;
+}
+.chart-group {
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+.chart-group > div {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: 12px 8px 8px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+@media (max-width: 900px) {
+    .dashboard-flex {
+        flex-direction: column;
+    }
+    .dashboard-right, .dashboard-left {
+        width: 100%;
+        min-width: 0;
+    }
+    .chart-group {
+        flex-direction: column;
+        gap: 16px;
+    }
+} 
