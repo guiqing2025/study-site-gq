@@ -3,105 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAT 课程复习</title>
+    <title>课程复习网站</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header class="top-nav">
-        <div class="logo">
-            <h1>SAT Prep</h1>
-        </div>
-        <nav class="nav-links">
-            <a href="#" id="nav-link-nav" class="active">导航</a>
-            <a href="#" id="nav-link-courses">课程</a>
-            <a href="#" id="nav-link-assignments">作业</a>
-            <a href="#" id="nav-link-about">关于我</a>
-        </nav>
-        <button class="hamburger-menu" aria-label="打开菜单">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-    </header>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-logo">课程复习网站</div>
+        <ul class="nav-links">
+            <li class="nav-item active" data-page="home">首页</li>
+            <li class="nav-item" data-page="courses">课程中心</li>
+            <li class="nav-item" data-page="practice">练习与题库</li>
+            <li class="nav-item" data-page="mistakes">错题本</li>
+            <li class="nav-item" data-page="exam">模拟考试</li>
+            <li class="nav-item" data-page="stats">学习统计</li>
+            <li class="nav-item" data-page="profile">个人中心</li>
+            <li class="nav-item" data-page="about">关于/帮助/反馈</li>
+        </ul>
+    </nav>
 
-    <main class="content-area">
-        <aside class="sidebar" id="sidebar-nav">
-            <h2>分类筛选</h2>
-            <div class="filter-group">
-                <h3>按科目</h3>
-                <ul>
-                    <li><a href="#">数学 (Math)</a></li>
-                    <li><a href="#">阅读 (Reading)</a></li>
-                    <li><a href="#">写作与语言</a></li>
-                </ul>
-            </div>
-            <div class="filter-group">
-                <h3>按类型</h3>
-                <ul>
-                    <li><a href="#">视频课程</a></li>
-                    <li><a href="#">练习题库</a></li>
-                    <li><a href="#">模拟考卷</a></li>
-                </ul>
-            </div>
-            <div class="filter-group">
-                <h3>按难度</h3>
-                <ul>
-                    <li><a href="#">初级</a></li>
-                    <li><a href="#">中级</a></li>
-                    <li><a href="#">高级</a></li>
-                </ul>
-            </div>
-        </aside>
-
-        <section class="main-content">
-            <div id="page-nav">
-                <h2 id="category-title">全部内容</h2>
-                <div class="card-grid" id="card-grid-container">
-                    <!-- 卡片将由 JavaScript 动态生成 -->
+    <!-- 主体内容区域 -->
+    <main id="main-content">
+        <!-- 首页内容 -->
+        <section id="home-section">
+            <!-- 1. 主视觉 Hero Section -->
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h1>开启个性化学习新篇章</h1>
+                    <p>系统化课程、海量题库、智能错题本，陪伴你的每一步成长。</p>
+                    <button id="hero-cta-btn" class="cta-button">立即探索课程</button>
                 </div>
             </div>
-            <div id="math-dashboard" style="display:none;">
-                <h2>数学学习追踪</h2>
-                <div class="dashboard-flex">
-                    <div class="dashboard-left">
-                        <h3>知识点/题目列表</h3>
-                        <ul id="math-question-list"></ul>
-                        <h3>错题本</h3>
-                        <ul id="math-wrong-list"></ul>
+
+            <!-- 2. 图片轮播 Slideshow Section -->
+            <div class="slideshow-container">
+                <div class="slides-wrapper">
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200" alt="海量学习资源">
+                        <div class="slide-text">海量学习资源</div>
                     </div>
-                    <div class="dashboard-right">
-                        <h3>历史答题记录</h3>
-                        <ul id="math-history-list"></ul>
-                        <h3>进度统计</h3>
-                        <div class="chart-group">
-                            <div>
-                                <canvas id="chart-line" width="300" height="200"></canvas>
-                                <div style="text-align:center;">每日答题数</div>
-                            </div>
-                            <div>
-                                <canvas id="chart-donut" width="200" height="200"></canvas>
-                                <div style="text-align:center;">正确率</div>
-                            </div>
-                            <div>
-                                <canvas id="chart-radar" width="250" height="200"></canvas>
-                                <div style="text-align:center;">知识点掌握</div>
-                            </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200" alt="互动学习社区">
+                        <div class="slide-text">互动学习社区</div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200" alt="在线名师辅导">
+                        <div class="slide-text">在线名师辅导</div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200" alt="系统化课程体系">
+                        <div class="slide-text">系统化课程体系</div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200" alt="项目式学习方法">
+                        <div class="slide-text">项目式学习方法</div>
+                    </div>
+                </div>
+
+                <!-- Next and previous buttons -->
+                <a class="prev">&#10094;</a>
+                <a class="next">&#10095;</a>
+
+                <!-- Navigation dots -->
+                <div class="dots-container">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+
+            <!-- 3. 核心功能 Features Section -->
+            <div class="features-section">
+                <h2>我们的优势</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3>系统化课程体系</h3>
+                        <p>覆盖小学、初中、高中全学段，知识点环环相扣，构建完整知识网络。</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>海量在线题库</h3>
+                        <p>精选历年真题与高质量模拟题，配有详细解析，助你高效备考。</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>智能错题本</h3>
+                        <p>自动收录练习中的错题，支持分类和重做，精准攻克你的知识薄弱点。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- 其他页面内容区域，后续用JS切换显示 -->
+        <section id="primary-section" style="display:none;">
+            <div class="stage-page-header">
+                <h2>小学课程</h2>
+                <div class="stage-subjects">
+                    <button class="stage-subject-btn active" data-subject="chinese">语文</button>
+                    <button class="stage-subject-btn" data-subject="math">数学</button>
+                    <button class="stage-subject-btn" data-subject="english">英语</button>
+                </div>
+            </div>
+            <div class="stage-course-list" id="primary-course-list">
+                <!-- 小学课程卡片由JS动态插入 -->
+            </div>
+        </section>
+        <!-- 初中课程页面 -->
+        <section id="junior-section" style="display:none;">
+            <div class="stage-page-header">
+                <h2>初中课程</h2>
+                <div class="stage-subjects">
+                    <button class="stage-subject-btn active" data-subject="chinese">语文</button>
+                    <button class="stage-subject-btn" data-subject="math">数学</button>
+                    <button class="stage-subject-btn" data-subject="english">英语</button>
+                    <button class="stage-subject-btn" data-subject="physics">物理</button>
+                    <button class="stage-subject-btn" data-subject="chemistry">化学</button>
+                    <button class="stage-subject-btn" data-subject="biology">生物</button>
+                    <button class="stage-subject-btn" data-subject="history">历史</button>
+                    <button class="stage-subject-btn" data-subject="geography">地理</button>
+                </div>
+            </div>
+            <div class="stage-course-list" id="junior-course-list">
+                <!-- 初中课程卡片由JS动态插入 -->
+            </div>
+        </section>
+        <!-- 高中课程页面 -->
+        <section id="senior-section" style="display:none;">
+            <div class="stage-page-header">
+                <h2>高中课程</h2>
+                <div class="stage-subjects">
+                    <button class="stage-subject-btn active" data-subject="chinese">语文</button>
+                    <button class="stage-subject-btn" data-subject="math">数学</button>
+                    <button class="stage-subject-btn" data-subject="english">英语</button>
+                    <button class="stage-subject-btn" data-subject="physics">物理</button>
+                    <button class="stage-subject-btn" data-subject="chemistry">化学</button>
+                    <button class="stage-subject-btn" data-subject="biology">生物</button>
+                    <button class="stage-subject-btn" data-subject="history">历史</button>
+                    <button class="stage-subject-btn" data-subject="geography">地理</button>
+                    <button class="stage-subject-btn" data-subject="politics">政治</button>
+                </div>
+            </div>
+            <div class="stage-course-list" id="senior-course-list">
+                <!-- 高中课程卡片由JS动态插入 -->
+            </div>
+        </section>
+        <!-- 课程中心页面 -->
+        <section id="courses-section" style="display:none;">
+            <div class="courses-container">
+                <!-- 左侧筛选栏 -->
+                <aside class="courses-sidebar">
+                    <h3>筛选与搜索</h3>
+                    <div class="filter-group">
+                        <input type="text" id="course-search-input" placeholder="搜索课程名称...">
+                    </div>
+                    <div class="filter-group">
+                        <h4>学段</h4>
+                        <ul id="stage-filter-list">
+                            <li><button class="filter-btn active" data-stage="all">全部</button></li>
+                            <li><button class="filter-btn" data-stage="primary">小学</button></li>
+                            <li><button class="filter-btn" data-stage="junior">初中</button></li>
+                            <li><button class="filter-btn" data-stage="senior">高中</button></li>
+                        </ul>
+                    </div>
+                    <div class="filter-group">
+                        <h4>学科</h4>
+                        <ul id="subject-filter-list">
+                             <!-- 学科按钮将由JS动态生成 -->
+                             <li><button class="filter-btn active" data-subject="all">全部</button></li>
+                        </ul>
+                    </div>
+                </aside>
+                <!-- 右侧主内容区 -->
+                <main class="courses-main-content">
+                    <div class="courses-header">
+                        <h2>课程中心</h2>
+                        <div class="sort-options">
+                            <label for="sort-select">排序：</label>
+                            <select id="sort-select">
+                                <option value="hot">按热度</option>
+                                <option value="new">按最新</option>
+                            </select>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div id="page-courses" style="display:none;">
-                <h2>课程页面</h2>
-                <div style="padding:32px;color:#888;">这里是课程页面内容（后续补充）</div>
-            </div>
-            <div id="page-assignments" style="display:none;">
-                <h2>作业页面</h2>
-                <div style="padding:32px;color:#888;">这里是作业页面内容（后续补充）</div>
-            </div>
-            <div id="page-about" style="display:none;">
-                <h2>关于我</h2>
-                <div style="padding:32px;color:#888;">这里是关于我页面内容（后续补充）</div>
+                    <div class="stage-course-list" id="courses-grid">
+                        <!-- 筛选后的课程卡片将由JS动态插入 -->
+                    </div>
+                </main>
             </div>
         </section>
     </main>

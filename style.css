@@ -315,4 +315,504 @@ a {
         flex-direction: column;
         gap: 16px;
     }
+}
+
+/* ========== 新导航栏样式 ========== */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-primary);
+  box-shadow: var(--shadow-sm);
+  padding: 0 32px;
+  height: 60px;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--fluent-blue);
+  letter-spacing: 1px;
+}
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 8px;
+}
+.nav-item {
+  padding: 8px 18px;
+  border-radius: var(--border-radius-md);
+  color: var(--text-secondary);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-item.active, .nav-item:hover {
+  background: var(--fluent-blue-light);
+  color: var(--fluent-blue);
+  font-weight: 600;
+}
+
+/* ========== 首页横幅 ========== */
+.banner {
+  background: linear-gradient(90deg, #e3f0fc 0%, #f8fbff 100%);
+  border-radius: var(--border-radius-md);
+  padding: 36px 24px 28px 24px;
+  margin: 32px 0 24px 0;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+.banner h1 {
+  font-size: 2.2rem;
+  color: var(--fluent-blue);
+  margin-bottom: 12px;
+}
+.banner p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+/* ========== 学段选择 ========== */
+.stage-select {
+  margin: 24px 0 32px 0;
+  text-align: center;
+}
+.stage-select h2 {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+}
+.stage-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+.stage-btn {
+  padding: 10px 32px;
+  font-size: 1rem;
+  border: 1.5px solid var(--fluent-blue);
+  background: #fff;
+  color: var(--fluent-blue);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-weight: 500;
+}
+.stage-btn.active, .stage-btn:hover {
+  background: var(--fluent-blue);
+  color: #fff;
+}
+
+/* ========== 公告栏 ========== */
+.announcement {
+  background: var(--bg-primary);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 18px 24px;
+  margin: 0 auto 32px auto;
+  max-width: 600px;
+}
+.announcement h3 {
+  font-size: 1.1rem;
+  color: var(--fluent-blue);
+  margin-bottom: 10px;
+}
+.announcement ul {
+  list-style: disc inside;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+/* ========== 热门课程推荐区 ========== */
+.hot-courses {
+  margin: 0 auto 40px auto;
+  max-width: 1100px;
+}
+.hot-courses h2 {
+  font-size: 1.3rem;
+  margin-bottom: 18px;
+  color: var(--fluent-blue);
+}
+.course-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: flex-start;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 900px) {
+  .navbar { padding: 0 12px; }
+  .hot-courses { max-width: 100%; }
+  .announcement { max-width: 98%; }
+}
+@media (max-width: 600px) {
+  .navbar { flex-direction: column; height: auto; }
+  .nav-links { flex-wrap: wrap; gap: 4px; }
+  .banner { padding: 18px 6px; }
+  .stage-buttons { flex-direction: column; gap: 10px; }
+}
+
+/* --- 学段通用页面样式 (小学/初中/高中) --- */
+.stage-page-header {
+    margin: 24px 0 16px 0;
+    padding: 0 24px;
+}
+
+.stage-page-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.stage-subjects {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.stage-subject-btn {
+    padding: 8px 16px;
+    border: none;
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.stage-subject-btn.active, .stage-subject-btn:hover {
+    background-color: var(--fluent-blue);
+    color: white;
+}
+
+.stage-course-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    padding: 0 24px;
+}
+
+.stage-course-card {
+    background-color: var(--bg-primary);
+    border-radius: var(--border-radius-md);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.stage-course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.course-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.course-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.course-progress {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.course-progress-bar {
+    width: 100%;
+    height: 6px;
+    background-color: var(--bg-secondary);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.course-progress-inner {
+    height: 100%;
+    background-color: var(--fluent-blue);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+@media (max-width: 600px) {
+    .stage-course-card { min-width: 90vw; max-width: 98vw; padding: 18px 8px; }
+    .stage-page-header { margin: 18px 0 10px 0; }
+    .stage-subjects { padding: 0 12px; }
+}
+
+/* --- 课程中心页面样式 --- */
+.courses-container {
+    display: flex;
+    gap: 24px;
+    padding: 24px;
+    align-items: flex-start;
+}
+
+.courses-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background-color: var(--bg-primary);
+    padding: 20px;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.courses-sidebar h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filter-group {
+    margin-bottom: 24px;
+}
+
+.filter-group h4 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+#course-search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    font-size: 14px;
+}
+
+.filter-group ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.filter-btn {
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    background-color: transparent;
+    color: var(--text-secondary);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background-color: var(--fluent-blue);
+    color: white;
+    border-color: var(--fluent-blue);
+}
+
+.courses-main-content {
+    flex-grow: 1;
+}
+
+.courses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.courses-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#sort-select {
+    padding: 6px 8px;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--border-color);
+}
+
+/* 响应式设计 */
+@media (max-width: 900px) {
+    .courses-container {
+        flex-direction: column;
+    }
+    .courses-sidebar {
+        width: 100%;
+    }
+}
+
+/* --- 新版首页样式 --- */
+
+/* 1. Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1600') no-repeat center center/cover;
+    color: white;
+    padding: 100px 24px;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.hero-content p {
+    font-size: 20px;
+    margin-bottom: 32px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-button {
+    background-color: var(--fluent-blue);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #005a9e;
+}
+
+/* 2. Slideshow */
+.slideshow-container {
+    max-width: 1200px;
+    position: relative;
+    margin: 32px auto;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    aspect-ratio: 16 / 9;
+}
+
+.slides-wrapper {
+    display: flex;
+    height: 100%;
+    transition: transform 0.7s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    vertical-align: middle;
+}
+
+.slide-text {
+    color: #f2f2f2;
+    font-size: 20px;
+    padding: 12px 24px;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    text-align: center;
+    background-color: rgba(0,0,0,0.6);
+}
+
+/* Prev/Next buttons */
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    background-color: rgba(0,0,0,0.3);
+}
+
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+.dots-container {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 0;
+}
+
+.dot {
+    cursor: pointer;
+    height: 12px;
+    width: 12px;
+    margin: 0 4px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.dot.active, .dot:hover {
+    background-color: var(--fluent-blue);
+}
+
+/* 3. Features Section */
+.features-section {
+    padding: 48px 24px;
+    text-align: center;
+    background-color: var(--bg-primary);
+}
+
+.features-section h2 {
+    font-size: 32px;
+    margin-bottom: 32px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    padding: 24px;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    background-color: var(--bg-secondary);
+}
+
+.feature-card h3 {
+    font-size: 20px;
+    color: var(--fluent-blue);
+    margin-bottom: 12px;
 } 
