@@ -1,5 +1,169 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  // ========== 0. 多语言支持 ==========
+  
+  // 当前语言设置
+  let currentLanguage = 'zh';
+  
+  // 获取翻译文本的函数
+  function t(key) {
+    const keys = key.split('.');
+    let value = translations[currentLanguage];
+    
+    for (const k of keys) {
+      if (value && value[k]) {
+        value = value[k];
+      } else {
+        // 如果找不到翻译，返回中文作为默认值
+        value = translations.zh;
+        for (const k2 of keys) {
+          if (value && value[k2]) {
+            value = value[k2];
+          } else {
+            return key; // 如果连中文都没有，返回键名
+          }
+        }
+        break;
+      }
+    }
+    return value;
+  }
+  
+  // 更新页面语言
+  function updateLanguage(lang) {
+    currentLanguage = lang;
+    
+    // 更新导航栏文本
+    document.querySelectorAll('.nav-item').forEach((item, index) => {
+      const keys = ['home', 'courses', 'practice', 'mistakes', 'exam', 'stats', 'profile', 'about'];
+      if (keys[index]) {
+        item.textContent = t(`nav.${keys[index]}`);
+      }
+    });
+    
+    // 更新首页内容
+    updateHomeContent();
+    
+    // 更新课程中心内容
+    updateCoursesContent();
+    
+    // 更新学段页面内容
+    updateStagePages();
+    
+    // 保存语言设置到本地存储
+    localStorage.setItem('preferredLanguage', lang);
+  }
+  
+  // 更新首页内容
+  function updateHomeContent() {
+    // 更新Hero区域
+    const heroTitle = document.querySelector('.hero-content h1');
+    const heroSubtitle = document.querySelector('.hero-content p');
+    const heroCta = document.getElementById('hero-cta-btn');
+    
+    if (heroTitle) heroTitle.textContent = t('home.hero.title');
+    if (heroSubtitle) heroSubtitle.textContent = t('home.hero.subtitle');
+    if (heroCta) heroCta.textContent = t('home.hero.cta');
+    
+    // 更新轮播图文本
+    const slideTexts = document.querySelectorAll('.slide-text');
+    slideTexts.forEach((text, index) => {
+      const keys = ['slide1', 'slide2', 'slide3', 'slide4', 'slide5'];
+      if (keys[index]) {
+        text.textContent = t(`home.slideshow.${keys[index]}`);
+      }
+    });
+    
+    // 更新特色区域
+    const featuresTitle = document.querySelector('.features-section h2');
+    if (featuresTitle) featuresTitle.textContent = t('home.features.title');
+  }
+  
+  // 更新课程中心内容
+  function updateCoursesContent() {
+    // 更新搜索框占位符
+    const searchInput = document.getElementById('course-search-input');
+    if (searchInput) searchInput.placeholder = t('common.searchPlaceholder');
+    
+    // 更新筛选器文本
+    const filterTitle = document.querySelector('.courses-sidebar h3');
+    if (filterTitle) filterTitle.textContent = t('common.filterAndSearch');
+    
+    // 更新学段筛选器
+    const stageLabels = document.querySelectorAll('#stage-filter-list .filter-btn');
+    stageLabels.forEach(btn => {
+      const stage = btn.dataset.stage;
+      if (stage === 'all') {
+        btn.textContent = t('common.all');
+      } else {
+        btn.textContent = t(`stages.${stage}`);
+      }
+    });
+    
+    // 更新排序选项
+    const sortSelect = document.getElementById('sort-select');
+    if (sortSelect) {
+      sortSelect.innerHTML = `
+        <option value="hot">${t('common.sortByHot')}</option>
+        <option value="new">${t('common.sortByNew')}</option>
+      `;
+    }
+  }
+  
+  // 更新学段页面内容
+  function updateStagePages() {
+    // 更新小学页面
+    const primaryTitle = document.querySelector('#primary-section h2');
+    if (primaryTitle) primaryTitle.textContent = t('stages.primary');
+    
+    // 更新初中页面
+    const juniorTitle = document.querySelector('#junior-section h2');
+    if (juniorTitle) juniorTitle.textContent = t('stages.junior');
+    
+    // 更新高中页面
+    const seniorTitle = document.querySelector('#senior-section h2');
+    if (seniorTitle) seniorTitle.textContent = t('stages.senior');
+    
+    // 更新学科按钮
+    updateSubjectButtons();
+  }
+  
+  // 更新学科按钮
+  function updateSubjectButtons() {
+    document.querySelectorAll('.stage-subject-btn').forEach(btn => {
+      const subject = btn.dataset.subject;
+      if (subject) {
+        btn.textContent = t(`subjects.${subject}`);
+      }
+    });
+  }
+  
+  // 语言切换器事件监听
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const lang = this.dataset.lang;
+      
+      // 更新按钮状态
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      
+      // 更新语言
+      updateLanguage(lang);
+    });
+  });
+  
+  // 初始化语言设置
+  const savedLanguage = localStorage.getItem('preferredLanguage');
+  if (savedLanguage && translations[savedLanguage]) {
+    currentLanguage = savedLanguage;
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.dataset.lang === savedLanguage) {
+        btn.classList.add('active');
+      }
+    });
+  }
+
   // ========== 1. 页面切换核心逻辑 ==========
   
   // 页面区域ID
@@ -183,70 +347,112 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ========== 4. 小学页面交互与课程渲染 ==========
   
-  // 小学课程模拟数据
-  const primaryCourses = [
-    { subject: 'chinese', name: '拼音与识字', desc: '掌握汉语拼音，提升识字能力。', progress: 80 },
-    { subject: 'chinese', name: '课文阅读与写作', desc: '培养阅读理解与基础写作能力。', progress: 60 },
-    { subject: 'math', name: '基础加减法', desc: '熟练掌握20以内加减法。', progress: 90 },
-    { subject: 'math', name: '图形与空间', desc: '认识常见图形，初步空间感知。', progress: 50 },
-    { subject: 'english', name: '字母与单词', desc: '学习26个字母和常用单词。', progress: 70 },
-    { subject: 'english', name: '简单对话', desc: '掌握日常英语问候与交流。', progress: 40 },
-  ];
+  // 获取当前语言的课程数据
+  function getCoursesByStage(stage) {
+    return translations[currentLanguage].courses[stage] || [];
+  }
+  
+  // 渲染小学课程卡片
+  function renderPrimaryCourses(subject) {
+    const list = document.getElementById('primary-course-list');
+    if (!list) return; // 防御式编程
+    
+    list.innerHTML = '';
+    const courses = getCoursesByStage('primary');
+    const filtered = courses.filter(c => c.subject === subject);
+    
+    if (filtered.length === 0) {
+      list.innerHTML = `<div style="padding:32px;color:#888;">${t('common.noSubjectCourses')}</div>`;
+      return;
+    }
+    
+    filtered.forEach(course => {
+      const card = document.createElement('div');
+      card.className = 'stage-course-card';
+      card.innerHTML = `
+        <div class="course-title">${course.name}</div>
+        <div class="course-desc">${course.desc}</div>
+        <div class="course-progress">${t('common.learningProgress')}：${course.progress}%</div>
+        <div class="course-progress-bar"><div class="course-progress-inner" style="width:${course.progress}%;"></div></div>
+      `;
+      list.appendChild(card);
+    });
+  }
 
   // ========== 5. 初中页面交互与课程渲染 ==========
   
-  // 初中课程模拟数据
-  const juniorCourses = [
-    { subject: 'chinese', name: '文言文基础', desc: '掌握基础文言实词和虚词。', progress: 75 },
-    { subject: 'chinese', name: '现代文阅读', desc: '提高文学作品赏析能力。', progress: 65 },
-    { subject: 'math', name: '代数基础', desc: '掌握一元二次方程的解法。', progress: 85 },
-    { subject: 'math', name: '几何证明', desc: '学习平面几何基本定理与证明。', progress: 55 },
-    { subject: 'english', name: '语法进阶', desc: '掌握各种时态和语态。', progress: 70 },
-    { subject: 'english', name: '阅读理解', desc: '提高英语文章阅读能力。', progress: 60 },
-    { subject: 'physics', name: '力学基础', desc: '学习牛顿运动定律。', progress: 80 },
-    { subject: 'physics', name: '电学入门', desc: '认识电路和欧姆定律。', progress: 45 },
-    { subject: 'chemistry', name: '物质构成', desc: '了解原子结构和化学键。', progress: 65 },
-    { subject: 'chemistry', name: '化学反应', desc: '掌握基本的化学方程式。', progress: 55 },
-    { subject: 'biology', name: '生命活动', desc: '了解细胞和人体系统。', progress: 75 },
-    { subject: 'biology', name: '生态环境', desc: '认识生态系统与环境保护。', progress: 70 },
-    { subject: 'history', name: '中国古代史', desc: '了解中国古代重要历史事件。', progress: 80 },
-    { subject: 'history', name: '近现代史', desc: '学习近现代重要历史时期。', progress: 60 },
-    { subject: 'geography', name: '地理基础', desc: '掌握地理基本知识。', progress: 85 },
-    { subject: 'geography', name: '世界地理', desc: '了解世界各地区地理特征。', progress: 50 },
-  ];
+  // 渲染初中课程卡片
+  function renderJuniorCourses(subject) {
+    const list = document.getElementById('junior-course-list');
+    if (!list) return; // 防御式编程
+    
+    list.innerHTML = '';
+    const courses = getCoursesByStage('junior');
+    const filtered = courses.filter(c => c.subject === subject);
+    
+    if (filtered.length === 0) {
+      list.innerHTML = `<div style="padding:32px;color:#888;">${t('common.noSubjectCourses')}</div>`;
+      return;
+    }
+    
+    filtered.forEach(course => {
+      const card = document.createElement('div');
+      card.className = 'stage-course-card';
+      card.innerHTML = `
+        <div class="course-title">${course.name}</div>
+        <div class="course-desc">${course.desc}</div>
+        <div class="course-progress">${t('common.learningProgress')}：${course.progress}%</div>
+        <div class="course-progress-bar"><div class="course-progress-inner" style="width:${course.progress}%;"></div></div>
+      `;
+      list.appendChild(card);
+    });
+  }
 
   // ========== 6. 高中页面交互与课程渲染 ==========
   
-  // 高中课程模拟数据
-  const seniorCourses = [
-    { subject: 'chinese', name: '古代诗歌鉴赏', desc: '深入理解唐诗宋词的艺术魅力。', progress: 78 },
-    { subject: 'chinese', name: '议论文写作进阶', desc: '掌握高级论证结构与写作技巧。', progress: 68 },
-    { subject: 'math', name: '函数与导数', desc: '掌握复杂函数的性质与应用。', progress: 88 },
-    { subject: 'math', name: '立体几何', desc: '解析空间几何问题。', progress: 62 },
-    { subject: 'english', name: '完形填空与阅读', desc: '提升高级英语阅读和完形填空能力。', progress: 75 },
-    { subject: 'english', name: '高级写作', desc: '学习不同体裁的英语写作。', progress: 58 },
-    { subject: 'physics', name: '电磁学', desc: '深入研究电场、磁场与电磁感应。', progress: 70 },
-    { subject: 'physics', name: '热力学', desc: '理解热力学定律与能量转换。', progress: 50 },
-    { subject: 'chemistry', name: '有机化学', desc: '系统学习有机物的结构、性质与反应。', progress: 65 },
-    { subject: 'chemistry', name: '化学反应原理', desc: '探究化学反应速率与化学平衡。', progress: 59 },
-    { subject: 'biology', name: '遗传与进化', desc: '掌握遗传定律和生物进化理论。', progress: 82 },
-    { subject: 'biology', name: '稳态与调节', desc: '研究生命活动的调节机制。', progress: 71 },
-    { subject: 'history', name: '世界现代史', desc: '了解两次世界大战以来的历史进程。', progress: 85 },
-    { subject: 'history', name: '文化史专题', desc: '探究中外思想文化发展史。', progress: 66 },
-    { subject: 'geography', name: '区域地理', desc: '系统分析典型区域的地理特征。', progress: 80 },
-    { subject: 'geography', name: '自然灾害', desc: '学习自然灾害的成因与防治。', progress: 55 },
-    { subject: 'politics', name: '经济与生活', desc: '理解市场经济与国家宏观调控。', progress: 77 },
-    { subject: 'politics', name: '哲学与生活', desc: '学习唯物论、辩证法和认识论。', progress: 63 },
-  ];
+  // 渲染高中课程卡片
+  function renderSeniorCourses(subject) {
+    const list = document.getElementById('senior-course-list');
+    if (!list) return; // 防御式编程
+    
+    list.innerHTML = '';
+    const courses = getCoursesByStage('senior');
+    const filtered = courses.filter(c => c.subject === subject);
+    
+    if (filtered.length === 0) {
+      list.innerHTML = `<div style="padding:32px;color:#888;">${t('common.noSubjectCourses')}</div>`;
+      return;
+    }
+    
+    filtered.forEach(course => {
+      const card = document.createElement('div');
+      card.className = 'stage-course-card';
+      card.innerHTML = `
+        <div class="course-title">${course.name}</div>
+        <div class="course-desc">${course.desc}</div>
+        <div class="course-progress">${t('common.learningProgress')}：${course.progress}%</div>
+        <div class="course-progress-bar"><div class="course-progress-inner" style="width:${course.progress}%;"></div></div>
+      `;
+      list.appendChild(card);
+    });
+  }
 
   // ========== 7. 课程中心交互与渲染 ==========
   
-  // 将所有课程数据整合到一个数组中，并添加学段信息
-  const allCourses = [
-    ...primaryCourses.map(c => ({...c, stage: 'primary'})),
-    ...juniorCourses.map(c => ({...c, stage: 'junior'})),
-    ...seniorCourses.map(c => ({...c, stage: 'senior'}))
-  ];
+  // 获取所有课程数据
+  function getAllCourses() {
+    const allCourses = [];
+    const stages = ['primary', 'junior', 'senior'];
+    
+    stages.forEach(stage => {
+      const courses = getCoursesByStage(stage);
+      courses.forEach(course => {
+        allCourses.push({...course, stage: stage});
+      });
+    });
+    
+    return allCourses;
+  }
 
   let currentFilters = {
     stage: 'all',
@@ -263,7 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('courses-grid');
     if (!grid) return;
 
-    let filtered = allCourses;
+    let filtered = getAllCourses();
 
     // 1. 学段筛选
     if (currentFilters.stage !== 'all') {
@@ -283,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     grid.innerHTML = '';
     if (filtered.length === 0) {
-      grid.innerHTML = '<div style="padding:32px;color:#888;width:100%;text-align:center;">未找到匹配的课程</div>';
+      grid.innerHTML = `<div style="padding:32px;color:#888;width:100%;text-align:center;">${t('common.noCoursesFound')}</div>`;
       return;
     }
 
@@ -292,9 +498,9 @@ document.addEventListener('DOMContentLoaded', () => {
       card.className = 'stage-course-card';
       // 在课程中心可以添加更多信息，例如学段标签
       card.innerHTML = `
-        <div class="course-title">${course.name} <span class="stage-tag">${course.stage}</span></div>
+        <div class="course-title">${course.name} <span class="stage-tag">${t(`stages.${course.stage}`)}</span></div>
         <div class="course-desc">${course.desc}</div>
-        <div class="course-progress">学习进度：${course.progress}%</div>
+        <div class="course-progress">${t('common.learningProgress')}：${course.progress}%</div>
         <div class="course-progress-bar"><div class="course-progress-inner" style="width:${course.progress}%;"></div></div>
       `;
       grid.appendChild(card);
@@ -307,8 +513,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const availableSubjects = new Set(['all']);
       let coursesToShow = currentFilters.stage === 'all' 
-          ? allCourses 
-          : allCourses.filter(c => c.stage === currentFilters.stage);
+          ? getAllCourses() 
+          : getAllCourses().filter(c => c.stage === currentFilters.stage);
           
       coursesToShow.forEach(c => availableSubjects.add(c.subject));
       
@@ -318,7 +524,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const btn = document.createElement('button');
           btn.className = 'filter-btn';
           btn.dataset.subject = subject;
-          btn.textContent = subject === 'all' ? '全部' : subject; // 这里可以映射为中文
+          btn.textContent = subject === 'all' ? t('common.all') : t(`subjects.${subject}`);
            if (subject === currentFilters.subject) {
               btn.classList.add('active');
           }
@@ -353,84 +559,6 @@ document.addEventListener('DOMContentLoaded', () => {
           currentFilters.searchTerm = e.target.value;
           renderFilteredCourses();
       });
-  }
-
-  // 渲染小学课程卡片
-  function renderPrimaryCourses(subject) {
-    const list = document.getElementById('primary-course-list');
-    if (!list) return; // 防御式编程
-    
-    list.innerHTML = '';
-    const filtered = primaryCourses.filter(c => c.subject === subject);
-    
-    if (filtered.length === 0) {
-      list.innerHTML = '<div style="padding:32px;color:#888;">暂无该学科课程</div>';
-      return;
-    }
-    
-    filtered.forEach(course => {
-      const card = document.createElement('div');
-      card.className = 'stage-course-card';
-      card.innerHTML = `
-        <div class="course-title">${course.name}</div>
-        <div class="course-desc">${course.desc}</div>
-        <div class="course-progress">学习进度：${course.progress}%</div>
-        <div class="course-progress-bar"><div class="course-progress-inner" style="width:${course.progress}%;"></div></div>
-      `;
-      list.appendChild(card);
-    });
-  }
-
-  // 渲染初中课程卡片
-  function renderJuniorCourses(subject) {
-    const list = document.getElementById('junior-course-list');
-    if (!list) return; // 防御式编程
-    
-    list.innerHTML = '';
-    const filtered = juniorCourses.filter(c => c.subject === subject);
-    
-    if (filtered.length === 0) {
-      list.innerHTML = '<div style="padding:32px;color:#888;">暂无该学科课程</div>';
-      return;
-    }
-    
-    filtered.forEach(course => {
-      const card = document.createElement('div');
-      card.className = 'stage-course-card';
-      card.innerHTML = `
-        <div class="course-title">${course.name}</div>
-        <div class="course-desc">${course.desc}</div>
-        <div class="course-progress">学习进度：${course.progress}%</div>
-        <div class="course-progress-bar"><div class="course-progress-inner" style="width:${course.progress}%;"></div></div>
-      `;
-      list.appendChild(card);
-    });
-  }
-
-  // 渲染高中课程卡片
-  function renderSeniorCourses(subject) {
-    const list = document.getElementById('senior-course-list');
-    if (!list) return; // 防御式编程
-    
-    list.innerHTML = '';
-    const filtered = seniorCourses.filter(c => c.subject === subject);
-    
-    if (filtered.length === 0) {
-      list.innerHTML = '<div style="padding:32px;color:#888;">暂无该学科课程</div>';
-      return;
-    }
-    
-    filtered.forEach(course => {
-      const card = document.createElement('div');
-      card.className = 'stage-course-card';
-      card.innerHTML = `
-        <div class="course-title">${course.name}</div>
-        <div class="course-desc">${course.desc}</div>
-        <div class="course-progress">学习进度：${course.progress}%</div>
-        <div class="course-progress-bar"><div class="course-progress-inner" style="width:${course.progress}%;"></div></div>
-      `;
-      list.appendChild(card);
-    });
   }
 
   // 小学学科筛选按钮交互
@@ -474,5 +602,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if(pageSections.junior) pageSections.junior.style.display = 'none';
   if(pageSections.senior) pageSections.senior.style.display = 'none';
   if(pageSections.courses) pageSections.courses.style.display = 'none';
+
+  // 初始化语言设置
+  updateLanguage(currentLanguage);
 
 }); 
